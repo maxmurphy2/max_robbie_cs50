@@ -4,31 +4,16 @@
 from dash import Dash, html, dcc
 import plotly.express as px
 import pandas as pd
+import tweepy
 
-app = Dash(__name__)
+print('hello')
 
-# assume you have a "long-form" data frame
-# see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+auth = tweepy.OAuth1UserHandler(
+   consumer_key, consumer_secret, access_token, access_token_secret
+)
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+api = tweepy.API(auth)
 
-app.layout = html.Div(children=[
-    html.H1(children='Hello, this is our CS50 project'),
-
-    html.Div(children='''
-        Dash: A web application framework for your data.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
-])
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
+public_tweets = api.home_timeline()
+for tweet in public_tweets:
+    print(tweet.text)
