@@ -16,9 +16,14 @@ Session(app)
 
 @app.route("/")
 def index():
-   return render_template("index.html", graphJSON=gm())
+   # Form to allow user to choose what word to search for
+   return render_template("index.html")
 
-def gm():
+@app.route("/map")
+def map():
+      return render_template("map.html", graphJSON=choro())
+
+def choro():
    # Load the GeoJSON (map of the world)
    with open('/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/custom.geo (1).json') as response:
       countries = json.load(response)
