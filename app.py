@@ -40,7 +40,7 @@ def map():
          return apology("Please enter an input. Go back to home page.")
    
       else:
-         return render_template("map.html", graphJSON=choro())
+         return render_template("map.html", graphJSON=choro(), user_input=user_input)
 
 # Defining the choropleth map function
 def choro():
