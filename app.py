@@ -5,6 +5,7 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
+from apology import apology
 
 # Configure application
 app = Flask(__name__)
@@ -14,15 +15,34 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-@app.route("/")
+# Global variable that we will update later
+user_input = None
+
+# Homepage
+@app.route("/", methods=["GET", "POST"])
 def index():
-   # Form to allow user to choose what word to search for
-   return render_template("index.html")
+   if request.method == "GET":
+      # Show form to allow user to choose what word to search for
+      return render_template("index.html")
 
-@app.route("/map")
+   elif request.method == "POST":
+      global user_input
+      user_input = request.form.get("text")
+
+      # Send user to the /map page
+      return redirect("/map")
+
+# Map page
+@app.route("/map", methods=["GET", "POST"])
 def map():
-      return render_template("map.html", graphJSON=choro())
+      # Check that user has entered an input
+      if user_input == None:
+         return apology("Please enter an input. Go back to home page.")
+   
+      else:
+         return render_template("map.html", graphJSON=choro())
 
+# Defining the choropleth map function
 def choro():
    # Load the GeoJSON (map of the world)
    with open('/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/custom.geo (1).json') as response:
@@ -36,14 +56,10 @@ def choro():
    # Subselect the country and tweet columns
    twitter_data = df[["file_name", "text"]]
 
-   # Create new df that contains country and proportion of tweets from that country
-   # (Proportion might be a better way of doing it, just do normalize = True)
-
-   # WORD THAT IS GOING TO BE SEARCHED FOR (EVENTUALLY GET USER INPUT)
-   word = "football"
+   # Create new df that contains country and number of tweets from that country
 
    # Now filter the df such that we only gets rows that contain this word
-   twitter_data = twitter_data[twitter_data['text'].str.contains(word)]
+   twitter_data = twitter_data[twitter_data['text'].str.contains(user_input)]
 
    # print(twitter_data.head())
 
