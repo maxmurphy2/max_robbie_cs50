@@ -40,43 +40,37 @@ def map():
          return apology("Please enter an input. Go back to home page.")
    
       else:
-         return render_template("map.html", graphJSON=choro(), user_input=user_input)
+         # Load the GeoJSON (map of the world)
+         with open('/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/custom.geo (1).json') as response:
+            countries = json.load(response)
 
-# Defining the choropleth map function
-def choro():
-   # Load the GeoJSON (map of the world)
-   with open('/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/custom.geo (1).json') as response:
-      countries = json.load(response)
+         # Load the Twitter data
+         df = pd.read_csv("/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/07_2020.csv")
 
-   #print(countries["features"][0])
+         # Subselect the country and tweet columns
+         twitter_data = df[["file_name", "text"]]
 
-   # Load the Twitter data
-   df = pd.read_csv("/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/07_2020.csv")
+         # Create new df that contains country and number of tweets from that country
 
-   # Subselect the country and tweet columns
-   twitter_data = df[["file_name", "text"]]
+         # Now filter the df such that we only gets rows that contain this word
+         twitter_data = twitter_data[twitter_data['text'].str.contains(user_input)]
 
-   # Create new df that contains country and number of tweets from that country
+         # Count the number of tweets per country
+         tdf = pd.DataFrame().assign(info=twitter_data['file_name'].value_counts())
+         tdf = tdf.reset_index()
+         tdf.columns = ['country', 'count']
 
-   # Now filter the df such that we only gets rows that contain this word
-   twitter_data = twitter_data[twitter_data['text'].str.contains(user_input)]
+         # CHOROPLETH MAP
 
-   # print(twitter_data.head())
+         # Change the max color depending on how many results countries get for the word
+         max = tdf['count'].max()
 
-   # Count the number of tweets per country
-   tdf = pd.DataFrame().assign(info=twitter_data['file_name'].value_counts())
-   tdf = tdf.reset_index()
-   tdf.columns = ['country', 'count']
+         total_tweets = tdf['count'].value_counts().sum()
 
-   # CHOROPLETH MAP
+         fig = px.choropleth_mapbox(tdf, geojson=countries, featureidkey='properties.geounit',locations='country', color='count', color_continuous_scale="Viridis", range_color=(0, max), mapbox_style="carto-positron", zoom=3, opacity=0.5, labels={'tweets':'num of tweets'})
+         
+         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+         
+         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-   # Change the max color depending on how many results countries get for the word
-   max = tdf['count'].max()
-
-   fig = px.choropleth_mapbox(tdf, geojson=countries, featureidkey='properties.geounit',locations='country', color='count', color_continuous_scale="Viridis", range_color=(0, max), mapbox_style="carto-positron", zoom=3, opacity=0.5, labels={'tweets':'num of tweets'})
-   
-   fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-   
-   graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-   return graphJSON
+         return render_template("map.html", graphJSON=graphJSON, total_tweets=total_tweets)
