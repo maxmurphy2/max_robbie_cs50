@@ -41,7 +41,7 @@ def map():
    
       else:
          # Load the GeoJSON (map of the world)
-         with open('/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/custom.geo (1).json') as response:
+         with open('custom.geo (1).json') as response:
             countries = json.load(response)
 
          # Load the Twitter data
