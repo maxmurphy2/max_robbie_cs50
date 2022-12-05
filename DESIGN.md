@@ -26,8 +26,16 @@ We adapted this file from the Finance PSet but implemented a different apology i
 
 SECTION 4: Templates (html files)
 
-This contains our html pages and the actual design and structure of what we see on the TWorldMap website. The basic layout.html file provides the structure that our other pages rely on. All pages have the TWorldMap logo and a drop down menu for website navigation. index.html is the search page and has a twitter logo as well as a search bar with buttons. apology.html is for when errors are thrown and map.html is the page with the choropleth map.  
+This contains our html pages and the actual design and structure of what we see on the TWorldMap website. 
+
+The basic layout.html file provides the structure that our other pages rely on. All pages have the TWorldMap logo and a drop down menu (navbar) from bootstrap for website navigation. They all then contain the main block of each page and finally a footer with our names. 
+
+index.html is our homepage and the search page, which has a twitter logo as well as a search bar for the user to input their search query. It also contains a little spiel from us on why we made this project. 
+
+apology.html is for when errors are thrown and has our custom Elon Musk Meme.
+
+map.html is the page with the choropleth map. It contains a count of how many countries have tweeted the query, what the query is, and the map itself as well as the tool bar of what tools you can use with the map.  
 
 SECTION 5: static/styles.css
 
-styles.css contains our css sheet with different styles for different html tags.
+styles.css contains our css sheet with different styles for different html tags. We decided to use blue and cyan as lead colours because they worked with the Twitter logo.
