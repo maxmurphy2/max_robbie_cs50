@@ -17,6 +17,6 @@ We also have a drop down menu in the top right of the website which allows you t
 
 IMPORTANT!:
 
-Because of how massive the original datasets were, the website took a long time to render. Two large sources of tweets are the UK and the US and so we decided to remove these two countries from the data set which took the average load time from multiple minutes to a few seconds. We believe this is a sacrifice worth taking and gives our website a more international leading rather than being traditionally American-centric.
+Because of how massive the original datasets were, the website took a long time to render. Two large sources of tweets are the UK and the US and so we decided to remove these two countries from the data set which took the average load time from multiple minutes to a few seconds. We believe this is a sacrifice worth taking and gives our website a more international leading rather than being traditionally American-centric. With more advanced data compression techniques, the project could reasonably be extended to contain these data sets.
 
 
