@@ -27,6 +27,7 @@ We adapted this file from the Finance PSet but implemented a different apology i
 SECTION 4: Templates (html files)
 
 This contains our html pages and the actual design and structure of what we see on the TWorldMap website. The basic layout.html file provides the structure that our other pages rely on. All pages have the TWorldMap logo and a drop down menu for website navigation. index.html is the search page and has a twitter logo as well as a search bar with buttons. apology.html is for when errors are thrown and map.html is the page with the choropleth map.  
-SECTION 3: static/styles.css
+
+SECTION 5: static/styles.css
 
 styles.css contains our css sheet with different styles for different html tags.
