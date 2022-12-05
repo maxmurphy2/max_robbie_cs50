@@ -13,6 +13,6 @@ To navigate the heat map use the menu options in the top right hand of the map. 
 5. Press the house icon to reset your view. 
 6. Press the toggle button to change whether a pop up will appear when you hover your mouse over a country. This pop up shows what the country is and how many tweets were recorded in that region in our dataset. 
 
-We also have a drop down menu in the top right of the website which allows you to navigate to our homepage and back to our map. You cannot navigate to the map unless you have already created a search. You can also press the TWorldMap icon in the top left to navigate to our homepage. 
+We also have a drop down menu in the top right of the website which allows you to navigate to our homepage and back to our map. You cannot navigate to the map unless you have already created a search. If you try to navigate to the map without an input you will receive an error page with a special message from Twitter CEO Elon Musk. You can also press the TWorldMap icon in the top left to navigate to our homepage. 
 
 
