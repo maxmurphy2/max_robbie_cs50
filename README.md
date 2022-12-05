@@ -15,4 +15,8 @@ To navigate the heat map use the menu options in the top right hand of the map. 
 
 We also have a drop down menu in the top right of the website which allows you to navigate to our homepage and back to our map. You cannot navigate to the map unless you have already created a search. If you try to navigate to the map without an input you will receive an error page with a special message from Twitter CEO Elon Musk. You can also return to the homepage by pressing the TWorldMap icon in the top left of any page. 
 
+IMPORTANT!:
+
+Because of how massive the original datasets were, the website took a long time to render. Two large sources of tweets are the UK and the US and so we decided to remove these two countries from the data set which took the average load time from multiple minutes to a few seconds. We believe this is a sacrifice worth taking and gives our website a more international leading rather than being traditionally American-centric.
+
 
