@@ -1,75 +1,32 @@
-Stage 1: setting up
-Create a shared codespace. DONE.
-Work out who is going to do which of the steps below, and when by. 
+INTRODUCTION
 
-Stage 2: Frontend (Max - I’ll start with this?)
-Create a website that has a map of the world on it
-‘All files from github’ ​​https://github.com/CrazyDaffodils/Interactive-Choropleth-Map-Using-Python 
-Render world map https://www.naturalearthdata.com/downloads/110m-cultural-vectors/
-(NOT NECESSARY BUT WE WILL MAKE A PARALLEL) Data used in obesity example Share of adults that are obese, 2016
+We decided to build TWorldMap to solve the problem of the sheer information-overload that exists on Twitter. There is simply too much information out there for people to make sense of. To scope this problem, we decided to focus on a specific component of this: how to identify where in the world certain topics on Twitter are being spoken about the most, and visualize this in as simple a way as possible. 
 
+Initially, we planned to connect to Twitter's API and query recent tweets to do this. However, we realized (having spent a significant amount of time exploring the API!) that it was not possible to access geo-tagged tweets unless we had access to the Enterprise version of the API. As such, we chose to instead use an open-source dataset that contained the necessary data. 
 
+There were two main components to our project: (i) wrangling the twitter dataset using the pandas library and (ii) creating a choropleth map using the plotly library. We then had to make sure that the two fit together! To best explain how we did this, we have decided to break down each file (starting with app.py since it is the most important), going from top to bottom:
 
+SECTION 1: datasets
 
- 
-Put a drop-down bar in the top right that enables users to query key words/phrases. 
-To start with, just read in a CSV/excel file which has all the data. Once this works, THEN we can connect to the Twitter API instead (see below). 
-Color-code the maps by country according to the results from the Twitter query. 
+Given that we could not use the Twitter API, we used a dataset that contained geo-tagged tweets from July 2020. The reason why we chose this particular dataset is because it contained tweets from many countries around the world (with the notable exceptions of the US and UK because if we included these the dataset would have been too big). 
 
-Stage 3: Backend
-Get signed up to Twitter’s API. DONE. 
-Make sure both of us can access Twitter API. 
-Choose a set of 5 key words/phrases that we want to query for. 
-Work out how to group these queries by country. 
+The dataset we used to create a global map was from https://geojson-maps.ash.ms/. We chose medium resolution so we had a high degree of quality without taking up too much memory. 
 
-How we can scope this a bit more
+SECTION 2: app.py
 
-Let’s just look at Tweets between January-June 2022 or something, otherwise we will have too many Tweets. 
+We begin by importing the relevant libraries, namely flask (to run our site), pandas (to wrangle the twitter dataset), plotly (to create the choropleth map), and apology (more on this below). Then, the application and session are configured. A global variable called 'user-input' is defined which will later be updated to what the user wants to query. Under # Homepage, we designed the homepage of our site. We made sure that if a user accessed this page using the 'GET' method, they would be shown index.html, and if they accessed this page using the 'POST' method (i.e. by filling out the form), 'user_input' would be updated and the user would be sent to the "map" page. 
 
-Instead of a query search bar at first, I think we should have a drop down menu which has a few choices that users can query for.
+The most critical code in our application comes from Line 35 onwards. First, we defined a function called map(). It begins by checking that a user has entered a value in the form, and then loads the GEoJSON map of the world. This was necessary to build our choropleth map. Then, we load in the Twitter dataset as a dataframe called df, and selected the country and tweet columns since these were the ones of interest. After this, we searched the dataset for all the rows where the user's input appears in the 'text' column. The number of tweets per country is then found by using 'value_counts()', and we chose to assign this to a new dataframe called 'tdf'. In order to split the new column that this creates into two separate ones, we  did 'reset_index()' and renamed the columns. (These few lines took us a lot of time!) 
 
-Twitter data options
+Having prepared the dataframe, we could begin to create the choropleth map. First, to ensure that the color spectrum was roughly the same for every query regardless of the number of tweets, we created a variable called 'max' that took the country with the highest number of tweets for this query. This is later used as the upper-bound of the map creation. Then, we calculated the total number of countries that mentioned the query as 'total_tweets' (we did this so the user gets some more helpful information on the "/map" page). On line 70, we created the choropleth map. Using the 'plotly express' library, we load in the 'tdf' dataframe, set the 'geojson' argument to 'countries' (which is the name of the custom map dataset we loaded in), put the featureidkey to 'properties.geounit' (since in the 'countries' dataset, there is a dictionary within a dictionary, and this is the name of the key that contains the country names), set locations to 'country' (as this is the column in 'tdf' that has the country names), the color to 'count' (as we want to vary the color depending on the number of tweets), color_continuous_scale to 'viridis' (we chose this from many options, cf. https://plotly.com/python/builtin-colorscales/), range_color was set between 0 (since you can't have a negative number of tweets) and max (which is the aforementioned maximum number of tweets any given country has for that query), mapbox_style (again, chose this from this site https://plotly.com/python/mapbox-layers/), the zoom and opacity were chosen after experimentation for best visual effect, and finally labels were set to tweets and number of tweets (the keys of this dictionary correspond to the column names). Since the plotly site requires that the plot is encoded is JSON, we use json.dumps() (which comes with plotly) to convert the plot to JSON. Finally, we render the map.html template, sending the necessary variables over. 
 
-​​https://github.com/shaypal5/awesome-twitter-data
+SECTION 3: apology.py
 
-Helpful info
+We adapted this file from the Finance PSet but implemented a different apology image with a message from Twitter CEO Elon Musk. After development, this is only used if the user tries to jump to the world map without putting in a search query. 
 
-API Key
-czSH3h3wAbx123m0rFnvs3zqU
+SECTION 4: Templates (html files)
 
-API Key Secret
-rWu5tNjUq1yMBEeNbOTvyb5QeF04rF4CiVB3eMX1VwWIp7GxBI
+This contains our html pages and the actual design and structure of what we see on the TWorldMap website. The basic layout.html file provides the structure that our other pages rely on. All pages have the TWorldMap logo and a drop down menu for website navigation. index.html is the search page and has a twitter logo as well as a search bar with buttons. apology.html is for when errors are thrown and map.html is the page with the choropleth map.  
+SECTION 3: static/styles.css
 
-Bearer Token
-AAAAAAAAAAAAAAAAAAAAAKBPjgEAAAAA5uj95lPVk3kyFLUJyn9BBYf3iQk%3D2Z0AXQ1px9UZbjJSS7ouVi33H5EhD8vvPCgJ0g5CwxxwUFDvoj
-
-Access token
-2567164875-Sb51Yr1oIjc3pr1JEyaJoKbmfmTTiUL02M3Gpo7
-
-Access token secret
-H1IBTHeHC28vF6znTT0Y6s5mdyJERWE6Vl8SVE8Nrhd6k
-
-Backend links
-
-https://developer.twitter.com/en/docs/tutorials/filtering-tweets-by-location
-
-https://developer.twitter.com/en/docs/twitter-api/v1/trends/trends-for-location/api-reference/get-trends-place
-
-
-
-Frontend links
-
-Best thing to use is something called Dash (here are the docs) and Plotly. 
-
-And this seems to be the best tutorial of how to use it https://towardsdatascience.com/choropleth-maps-in-practice-with-plotly-and-python-672a5eef3a19 and https://towardsdatascience.com/choropleth-maps-in-practice-with-plotly-and-python-672a5eef3a19
-
-https://www.youtube.com/watch?v=7m0Bq1EGPPg&t=0s
-
-https://towardsdatascience.com/a-complete-guide-to-an-interactive-geographical-map-using-python-f4c5197e23e0
-
-https://community.plotly.com/t/interactive-map-with-clickable-countries/39495/14
-
-
-Sort out the navigation bar
-
-Do description at front of first page
+styles.css contains our css sheet with different styles for different html tags.
