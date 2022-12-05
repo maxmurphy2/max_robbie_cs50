@@ -1,3 +1,4 @@
+
 /* Size for brand */
 nav .navbar-brand
 {
@@ -22,19 +23,13 @@ nav .navbar-brand .green
     color: #2e944b;
 }
 
-table {
-	width: 800px;
-	border-collapse: collapse;
-	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+head {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #000080;
 }
 
-.center {
-    margin-left: auto;
-    margin-right: auto;
-  }
 
 p {
-
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: #000080;
 }
