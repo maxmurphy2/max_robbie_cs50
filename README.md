@@ -18,3 +18,8 @@ We also have a drop down menu in the top right of the website which allows you t
 IMPORTANT!:
 
 Because of how massive the original datasets were, the website took a long time to render. Since a large amount of tweets came from the US and UK, we opted to use a dataset that did not include tweets from these two countries. We believe this is a sacrifice worth taking and gives our website a more international leaning rather than being traditionally American-centric. (With more compute, we would have been able to extend to these datasets!)
+
+____________________________
+
+Our walkthrough video: 
+https://youtu.be/pbcTHWsqsbk
