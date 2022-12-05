@@ -73,4 +73,4 @@ def map():
          
          graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-         return render_template("map.html", graphJSON=graphJSON, total_tweets=total_tweets)
+         return render_template("map.html", graphJSON=graphJSON, total_tweets=total_tweets, user_input=user_input)
