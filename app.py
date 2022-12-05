@@ -45,7 +45,7 @@ def map():
             countries = json.load(response)
 
          # Load the Twitter data
-         df = pd.read_csv("/Users/maxmurphy/Dropbox (Personal)/My Mac (Max’s MacBook Pro)/Downloads/07_2020.csv")
+         df = pd.read_csv("07_2020.csv")
 
          # Subselect the country and tweet columns
          twitter_data = df[["file_name", "text"]]
